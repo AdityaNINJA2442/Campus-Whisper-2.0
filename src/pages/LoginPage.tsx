@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { AuthUser } from "../types";
-import { ACCOUNTS } from "../lib/data";
+import { getAccounts } from "../lib/data";
 
 export function LoginPage({ onLogin }: { onLogin: (u: AuthUser) => void }) {
   const [roll, setRoll]   = useState("");
@@ -13,14 +13,14 @@ export function LoginPage({ onLogin }: { onLogin: (u: AuthUser) => void }) {
     setErr(""); setBusy(true);
     await new Promise(r => setTimeout(r, 700));
     // Simple demo auth — roll number = id, password = "hostel"
-    const acc = ACCOUNTS.find(a => a.id === roll.toLowerCase().trim() && pass === "hostel");
+    const acc = getAccounts().find(a => a.id === roll.toLowerCase().trim() && pass === "hostel");
     if (acc) onLogin(acc as AuthUser);
     else setErr("Invalid credentials. Use IDs: s001 / s002 / w001, password: hostel");
     setBusy(false);
   };
 
   const quick = (id: string) => {
-    const acc = ACCOUNTS.find(a => a.id === id)!;
+    const acc = getAccounts().find(a => a.id === id)!;
     onLogin(acc as AuthUser);
   };
 
